@@ -14,44 +14,66 @@ Author: Aleksa Dimitrijević (https://dimitrium.org/en/dimipedia/aleksa-dimitrij
 
 == Description ==
 
-DimiPress Detour temporarily redirects public front-end requests to a published WordPress page chosen in Settings → DimiPress Detour.
+DimiPress Detour temporarily redirects public front-end visitors to a published WordPress page you select in Settings → DimiPress Detour. It is for times when you are working on your site and want visitors to land on a page you have prepared.
 
-The plugin does not create, supply, or style a coming soon or maintenance page. Create and design any destination page with your normal WordPress tools, then select it in the plugin settings.
+The plugin does not create, write, supply, or style a coming soon or maintenance page. Create and design the destination page with the WordPress editor and your current theme, then select it in the settings.
 
-The optional “Allow destination subpages” setting keeps the selected page and its nested child pages accessible. Administrators always have full access. In the settings, choose any additional WordPress roles that should also have full access while the detour is active.
+Detour follows a simple principle: a plugin should do one thing and do it well. Its one job is to redirect public visitors to your selected page. It has no Pro edition, paid feature gates, required theme, required page builder, or extra maintenance-page system. It is designed to work with any WordPress site and any theme.
 
-The redirect uses HTTP 302 so it is temporary and safe to change during ongoing work. Disable the destination selection to turn redirection off.
+Administrators always have full site access. You can also select additional WordPress roles whose signed-in users should have full site access during the detour. The optional “Allow destination subpages” setting keeps the selected page and its descendant pages accessible.
+
+The redirect is temporary (HTTP 302). Clear the destination selection to turn it off. The plugin leaves WordPress admin, REST API, AJAX, cron, preview, and non-GET/HEAD requests alone.
 
 == Installation ==
 
-1. Upload the `dimipress-detour` folder to `/wp-content/plugins/` or install the packaged ZIP through Plugins → Add New Plugin → Upload Plugin.
-2. Activate DimiPress Detour in the Plugins screen.
-3. Open Settings → DimiPress Detour.
-4. Select a published page and save. Optionally enable access to its child pages.
+1. Upload the `dimipress-detour` folder to `/wp-content/plugins/`, or upload its ZIP through Plugins → Add New Plugin → Upload Plugin.
+2. Activate DimiPress Detour in Plugins → Installed Plugins.
+3. Create and publish the page you want visitors to see. Design it using your normal WordPress tools and current theme.
+4. Open Settings → DimiPress Detour.
+5. Select your published destination page and save.
+6. Optionally enable “Allow destination subpages” and select additional roles for full site access, then save your changes.
+
+To end the detour, choose “Disabled — do not redirect” under Destination page and save. If a browser, caching plugin, proxy, or CDN has cached a redirect, clear its cache after changing the setting.
 
 == Frequently Asked Questions ==
 
-= Does this plugin create a maintenance page? =
+= Does this plugin create a maintenance or coming soon page? =
 
-No. You choose and design an existing published page yourself.
+No. You create or select an existing published page and control its content and design yourself.
 
-= Who can access the rest of the site during the detour? =
+= Do I need a special theme or a compatible theme? =
 
-Administrators always have full access. Under “Roles with full site access”, select any additional WordPress roles whose signed-in users should be exempt from redirection.
+No. Detour redirects through WordPress independently of theme design. Your active theme renders the selected destination page like any other WordPress page.
+
+= Is there a Pro version or a paid feature limit? =
+
+No. The plugin is designed to do one job well, without a Pro edition, paid feature gates, or required add-ons.
+
+= Who can access the full site while the detour is active? =
+
+Administrators always have full access. In Settings → DimiPress Detour, select any additional WordPress roles whose signed-in users should also bypass the detour.
 
 = What does “Allow destination subpages” do? =
 
-It exempts the selected page and its descendant pages from redirection. Other pages remain redirected.
+It allows the selected page and its child pages at any depth to load normally. Other public front-end pages continue to redirect to the selected destination.
 
-= Are admin, REST, AJAX, preview, cron, and form submissions redirected? =
+= Does it redirect the REST API, AJAX, previews, cron, or form submissions? =
 
-No. The redirect applies to public front-end GET and HEAD requests. Administrative and integration endpoints, previews, and other HTTP methods are left alone.
+No. The redirect only handles public front-end GET and HEAD requests. WordPress admin, REST API, AJAX, cron, preview, and other HTTP methods are excluded.
+
+= Can I use a page in another language? =
+
+Yes. You can select any published page available on your WordPress site. Detour does not require a specific language or translation plugin.
+
+= Why do I still see the redirect after disabling it? =
+
+Your browser, hosting cache, caching plugin, reverse proxy, or CDN may have cached the temporary redirect. Clear the relevant caches and try again in a private browser window.
 
 == Changelog ==
 
 = 1.0.1 =
 * Add the plugin and author profile URLs.
-* Refine the plugin description and documentation.
+* Refine the plugin description and update documentation.
 
 = 1.0.0 =
 * Initial release.
