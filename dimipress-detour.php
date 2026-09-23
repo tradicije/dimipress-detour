@@ -3,7 +3,7 @@
  * Plugin Name: DimiPress Detour
  * Plugin URI: https://dimitrium.org/en/dimipress/detour
  * Description: Temporarily redirects public visitors to a page you choose while your WordPress site is being updated.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Aleksa Dimitrijević
  * Author URI: https://dimitrium.org/en/dimipedia/aleksa-dimitrijevic
  * License: AGPL-3.0-or-later
@@ -35,6 +35,12 @@ function dimipress_detour_register_settings() {
 }
 add_action( 'admin_init', 'dimipress_detour_register_settings' );
 
+/** Match options.php's save capability to the capability used for this screen. */
+function dimipress_detour_settings_capability( $capability ) {
+	return 'edit_pages';
+}
+add_filter( 'option_page_capability_dimipress_detour', 'dimipress_detour_settings_capability' );
+
 function dimipress_detour_add_settings_page() {
 	add_options_page( __( 'DimiPress Detour', 'dimipress-detour' ), __( 'DimiPress Detour', 'dimipress-detour' ), 'edit_pages', 'dimipress-detour', 'dimipress_detour_render_settings_page' );
 }
@@ -42,16 +48,16 @@ add_action( 'admin_menu', 'dimipress_detour_add_settings_page' );
 
 function dimipress_detour_sanitize_settings( $input ) {
 	$input = is_array( $input ) ? $input : array();
-	$page_id = isset( $input['page_id'] ) ? absint( $input['page_id'] ) : 0;
+	$page_id = isset( $input['page_id'] ) && is_scalar( $input['page_id'] ) ? absint( $input['page_id'] ) : 0;
 	$page = $page_id ? get_post( $page_id ) : null;
 	if ( ! $page || 'page' !== $page->post_type || 'publish' !== $page->post_status ) {
 		$page_id = 0;
 	}
 	return array(
 		'page_id'        => $page_id,
-		'allow_subpages' => empty( $input['allow_subpages'] ) ? 0 : 1,
+		'allow_subpages' => isset( $input['allow_subpages'] ) && '1' === (string) $input['allow_subpages'] ? 1 : 0,
 		'allowed_roles'  => isset( $input['allowed_roles'] ) && is_array( $input['allowed_roles'] )
-			? array_values( array_intersect( array_map( 'sanitize_key', $input['allowed_roles'] ), array_keys( wp_roles()->roles ) ) )
+			? array_values( array_intersect( array_map( 'sanitize_key', array_filter( $input['allowed_roles'], 'is_string' ) ), array_keys( wp_roles()->roles ) ) )
 			: array(),
 	);
 }
@@ -143,7 +149,8 @@ function dimipress_detour_redirect_public_visitors() {
 	if ( is_admin() || wp_doing_ajax() || wp_doing_cron() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || is_preview() ) {
 		return;
 	}
-	if ( ! in_array( strtoupper( $_SERVER['REQUEST_METHOD'] ?? 'GET' ), array( 'GET', 'HEAD' ), true ) ) {
+	$request_method = isset( $_SERVER['REQUEST_METHOD'] ) && is_string( $_SERVER['REQUEST_METHOD'] ) ? strtoupper( $_SERVER['REQUEST_METHOD'] ) : 'GET';
+	if ( ! in_array( $request_method, array( 'GET', 'HEAD' ), true ) ) {
 		return;
 	}
 	$user = wp_get_current_user();

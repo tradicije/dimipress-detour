@@ -3,7 +3,7 @@ Contributors: aleksadimitrijevic
 Tags: redirect, maintenance, site work
 Requires at least: 6.2
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GNU Affero General Public License v3.0 or later
 License URI: https://www.gnu.org/licenses/agpl-3.0.html
 
@@ -35,6 +35,8 @@ The redirect is temporary (HTTP 302). Clear the destination selection to turn it
 
 To end the detour, choose “Disabled — do not redirect” under Destination page and save. If a browser, caching plugin, proxy, or CDN has cached a redirect, clear its cache after changing the setting.
 
+Deleting the plugin removes its saved settings. Deactivating it keeps the settings so they are available if you activate it again.
+
 == Frequently Asked Questions ==
 
 = Does this plugin create a maintenance or coming soon page? =
@@ -65,11 +67,20 @@ No. The redirect only handles public front-end GET and HEAD requests. WordPress 
 
 Yes. You can select any published page available on your WordPress site. Detour does not require a specific language or translation plugin.
 
+= What happens to my settings when I uninstall the plugin? =
+
+Deleting the plugin removes its saved settings from the site (and from each site on a multisite network). Deactivating the plugin preserves them.
+
 = Why do I still see the redirect after disabling it? =
 
 Your browser, hosting cache, caching plugin, reverse proxy, or CDN may have cached the temporary redirect. Clear the relevant caches and try again in a private browser window.
 
 == Changelog ==
+
+= 1.0.2 =
+* Fix settings saves for users with the edit_pages capability.
+* Strengthen validation of submitted settings and request methods.
+* Remove plugin settings on uninstall, including on multisite networks.
 
 = 1.0.1 =
 * Add the plugin and author profile URLs.

@@ -55,6 +55,8 @@ There is no Pro edition, paid feature gate, required theme, bundled page builder
 5. Administrators already have full site access. Under **Roles with full site access**, select any other roles whose users should be able to browse the entire site while the detour is active.
 6. To end the detour, return to the settings and choose **Disabled — do not redirect**, then save.
 
+Deactivating the plugin preserves its settings. Deleting it removes those settings from the site. On multisite, uninstall removes the settings from each site in the network.
+
 The redirect is temporary (HTTP 302). If your site uses a page cache, proxy, or CDN, clear its cache after enabling or disabling the detour so it does not continue serving an older redirect response.
 
 ## How the redirect works
@@ -106,6 +108,10 @@ Your browser, host, caching plugin, reverse proxy, or CDN may have cached the te
 ### How do I turn it off?
 
 Choose **Disabled — do not redirect** under **Settings → DimiPress Detour** and save.
+
+### What happens to my settings if I deactivate or uninstall the plugin?
+
+Deactivation keeps the settings so they are available if you reactivate the plugin. Deleting the plugin removes its settings from the site; uninstalling on multisite removes them from each site in the network.
 
 ## Development and contribution
 
